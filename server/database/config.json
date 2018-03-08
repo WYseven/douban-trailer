@@ -1,0 +1,4 @@
+{
+  "database": "miaov",
+  "mongodUrl": "mongodb://localhost:27017/"
+}
