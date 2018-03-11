@@ -16,6 +16,10 @@ const pp = require('puppeteer');
     waitUntil: 'networkidle2'  // 页面空闲加载完毕
   });
 
+  page.on('requestfinished', () => {
+    //console.log('请求结束');
+  });
+
   await sleep(3000)
 
   await page.waitForSelector('.more');  // 等待出现某个元素
@@ -49,13 +53,12 @@ const pp = require('puppeteer');
 
 
   // 爬到的数据
-  console.log(result)
 
   await browser.close();  // 关闭浏览器
 
   // 作为子进程的脚本运行，运行后发送给主进程数据
-  process.send(result);
+  await process.send(result);
   // 退出子进程
-  process.exit(0);
+  await process.exit(0);
 
 })()

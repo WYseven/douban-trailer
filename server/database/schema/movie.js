@@ -17,10 +17,11 @@ const MovieSchema = new mongoose.Schema({
   movieTypes: [String],
   pubdate: Mixed,
   tags: Mixed,
-  category: {
+  category: [{
+    name:String,
     type: ObjectId,
     ref: 'Category'
-  },
+  }],
   meta: {
     createdAt: {
       type: Date,

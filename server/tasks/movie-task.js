@@ -10,24 +10,26 @@ let taskFile = resolve(__dirname, '../Crawler/trailer-list');  // 相对当前�
 ;(async () => {
   const child = cp.fork(taskFile, []); // 开始跑脚本，返回一个子进程的对象
 
-  // 监控退出
-  child.on('exit', (code) => {
-    console.log('退出了', code)
-  })
+  
 
   // 拿到子进程跑完后发送过来的通信数据
   child.on('message', (data) => {
     // 把抓取的代码入库
-  
+    console.log(data)
     data.forEach(async (item) => {
       let movieItem = await MovieModel.findOne({movieId:item.movieId});
+      console.log(movieItem)
       if (!movieItem) {
         movieItem = new MovieModel(item)
-
         await movieItem.save();
       }
     })
 
+  })
+
+  // 监控退出
+  child.on('exit', (code) => {
+    console.log('退出了', code)
   })
 
 })()
