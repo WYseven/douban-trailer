@@ -7,10 +7,10 @@ const MovieSchema = new mongoose.Schema({
   rate: Number,
   title: String,
   summary: String,
-  video: String,
+  videoUrl: String,
   cover: String,
   poster: String,
-  videoKey: String,
+  videoUrlKey: String,
   coverKey: String,
   posterKey: String,
   rawTitle: String,
@@ -18,7 +18,6 @@ const MovieSchema = new mongoose.Schema({
   pubdate: Mixed,
   tags: Mixed,
   category: [{
-    name:String,
     type: ObjectId,
     ref: 'Category'
   }],

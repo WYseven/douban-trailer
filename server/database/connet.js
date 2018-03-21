@@ -28,6 +28,23 @@ export const connect = async () => {
 // 加载所有的Schema，进行建模
 export const initSchemas = async () => {
   // 同步加载所有的文件
-  
+
   glob.sync(resolve(__dirname, './schema/**/*.js')).forEach(require)
+}
+
+// 加载所有的Schema，进行建模
+export const initUser = async () => {
+  // 同步加载所有的文件
+  let userModel = mongoose.model('User');
+  let user = await userModel.findOne({
+    username: 'admin'
+  })
+
+  if (!user){
+    let u = new userModel({
+      username: 'admin',
+      password: '123'
+    })
+    await u.save();
+  }
 }

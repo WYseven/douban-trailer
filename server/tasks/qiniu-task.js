@@ -2,7 +2,8 @@ const qiniu = require('qiniu');
 const nanoid = require('nanoid'); // 随机生成id
 const conf = require('../config/config.js');
 const { extname } = require('path');
-
+const mongoose = require('mongoose')
+const MovieModel = mongoose.model('Movie');
 
 const bucket = conf.qiniu.bucket;  // 拿到存储空间名
 const visitUrl = conf.qiniu.visitUrl; // 线上访问地址
@@ -40,43 +41,58 @@ const fetchResources = (url, key) => {
   })
 }
 
-;(async () => {
-  
-  // 测试的资源地址
-  const movies = [
-    {
-      movieId: 25755645,
-      paster: 'https://img3.doubanio.com/view/photo/l_ratio_poster/public/p2189861035.jpg',
-      cover: 'https://img1.doubanio.com/img/trailer/medium/2002519377.jpg',
-      videoUrl: 'http://vt1.doubanio.com/201803051629/b3e42dc4cfd8a31bd324c4c86b76b69a/view/movie/M/301360300.mp4'
-    }
+// 获取并上传到七牛
+const action = async (item) => {
+  return new Promise(async (resolve,reject) => {
+    if (item.videoUrl && !item.videoUrlKey) {  // key如果不能存在说明没存储过
 
-  ]
-  
-  let qiniuMovies = movies.map(async (item) => {
-    if (item.videoUrl && !item.videoUrlKey){  // key如果不能存在说明没存储过
+      try {
+        let poster = await fetchResources(item.poster, nanoid() + extname(item.poster));
+        let cover = await fetchResources(item.cover, nanoid() + extname(item.cover));
+        let videoUrl = await fetchResources(item.videoUrl, nanoid() + extname(item.videoUrl));
+        // 添加一个key，key其实是上传后qiniu那边返回的资源名字
 
-        try{
-          let paster = await fetchResources(item.paster, nanoid() + extname(item.paster));
-          let cover = await fetchResources(item.cover, nanoid() + extname(item.cover));
-          let videoUrl = await fetchResources(item.videoUrl, nanoid() + extname(item.videoUrl));
-
-          // 添加一个key，key其实是上传后qiniu那边返回的资源名字
-
-          if (!item.pasterKey) {
-            item.pasterKey = paster.key
-          }
-          if (!item.coverKey) {
-            item.coverKey = cover.key
-          }
-          if (!item.videoUrlKey) {
-            item.videoUrlKey = videoUrl.key
-          }
-          console.log(item)
-        }catch(error){
-          console.log(error)
+        if (!item.posterKey) {
+          item.posterKey = poster.key
         }
+        if (!item.coverKey) {
+          item.coverKey = cover.key
+        }
+        if (!item.videoUrlKey) {
+          item.videoUrlKey = videoUrl.key
+        }
+        resolve()
+      } catch (error) {
+        reject(error)
+      }
+    }else{
+      reject();
     }
-  });
+  })
+}
 
-})()
+module.exports = async () => {
+  return new Promise(async (resolve, reject) => {
+
+    // 测试的资源地址
+    const movies = await MovieModel.find({
+      $or: [
+        {
+          videoKey: { $exists: false }
+
+        },
+        {
+          videoKey: null
+        }
+      ]
+    })
+    for (let i = 0; i < movies.length; i++) {
+      await action(movies[i]);
+      await movies[i].save();
+    }
+
+    resolve();
+  })
+}
+
+

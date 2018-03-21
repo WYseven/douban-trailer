@@ -40,12 +40,12 @@ const pp = require('puppeteer');
       var title = $(item).find('.title').text();
       var rate = +($(item).find('.rate').text());
       var movieId = $(item).find('div').data('id');
-      var paster = $(item).find('img').attr('src').replace('s_ratio_poster', 'l_ratio_poster');
+      var poster = $(item).find('img').attr('src').replace('s_ratio_poster', 'l_ratio_poster');
       return {
         title,
         rate,
         movieId,
-        paster
+        poster
       }
     })
 
