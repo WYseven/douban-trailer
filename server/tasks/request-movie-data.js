@@ -23,8 +23,9 @@ module.exports = async () => {
       ]
     });
 
-    for (let i = 0; i < movies.length; i++){
+    for (let i = 0; i < 3; i++){
       let item = movies[i];
+      console.log(item)
       let movieData = await getMovieData(item.movieId);
       // 解析数据,可能会出错
       try {

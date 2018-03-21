@@ -86,7 +86,7 @@ module.exports = async () => {
         }
       ]
     })
-    for (let i = 0; i < movies.length; i++) {
+    for (let i = 0; i < 3; i++) {
       await action(movies[i]);
       await movies[i].save();
     }

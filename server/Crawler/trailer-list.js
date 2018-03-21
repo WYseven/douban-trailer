@@ -58,6 +58,7 @@ const pp = require('puppeteer');
 
   // 作为子进程的脚本运行，运行后发送给主进程数据
   await process.send(result);
+  await sleep(1000)
   // 退出子进程
   await process.exit(0);
 

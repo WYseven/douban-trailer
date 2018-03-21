@@ -8,6 +8,5 @@ export const router = app => {
   let router = new Route(app, apiPath);  
   // 初始化路由，内部回家再apiPath下的路由文件
   router.init();
-
   console.log(router.routerPath)
 }

@@ -14,6 +14,7 @@ module.exports = async () => {
 
     // 拿到子进程跑完后发送过来的通信数据
     child.on('message', async (data) => {
+      console.log(data)
       // 把抓取的代码入库
       for(let i = 0; i < data.length; i++){
         let item = data[i];
@@ -23,13 +24,13 @@ module.exports = async () => {
           await movieItem.save();
         }
       }
-
       resolve('ok')
     })
 
     // 监控退出
     child.on('exit', (code) => {
       console.log('退出了', code)
+      
     })
   })
 }
