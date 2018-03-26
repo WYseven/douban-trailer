@@ -1,24 +1,32 @@
 
 const { controller, get, post} = require('../lib/decorator');
+const {registerCheck,loginCheck} = require('../database/service/userService.js')
 
 @controller('user')
 export class miaovCons {
   @post('/register')
   async register(ctx) {
-    console.log(ctx.request.body)
-    ctx.body = 'hello'
+    let {username,email,password} = ctx.request.body;
+    let result = await registerCheck(ctx.request.body);
+    
+    ctx.body = {
+      success: result.success,
+      mes: result.mes
+    };
+    
   }
   @get('/test')
   async test(ctx) {
     ctx.body = 'hello:'+ctx.session.user
   }
-  @get('/login')
+  @post('/login')
   async login(ctx) {
-    let {name} = ctx.request.query;
-    let n = ctx.session.views || 0;
-    ctx.session.views = ++n;
-    ctx.session.user = name;
-    ctx.body = n + ' views' + ctx.session.user;
+    let {username,email,password} = ctx.request.body;
+    let result = await loginCheck(ctx.request.body);
+    ctx.body = {
+      success: result.success,
+      mes: result.mes
+    };
   }
 }
 
