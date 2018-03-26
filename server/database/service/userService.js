@@ -10,7 +10,7 @@ export let registerCheck = async ({username='',email='',password=''}) => {
   if(!empty.success){
     return empty;
   }
-
+  
   // 到数据库查找
   let user = await UserModel.findOne({username});
 

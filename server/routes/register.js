@@ -13,11 +13,6 @@ export class miaovCons {
       success: result.success,
       mes: result.mes
     };
-    
-  }
-  @get('/test')
-  async test(ctx) {
-    ctx.body = 'hello:'+ctx.session.user
   }
   @post('/login')
   async login(ctx) {
