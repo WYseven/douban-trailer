@@ -24,3 +24,23 @@ export let getMovieService = async (type='',year='',start=0,count=20) => {
   let movies = await movieModel.find(query).limit(parseInt(count)).skip(parseInt(start));
   return movies;
 }
+
+// 根据id获取相关电影
+export let getMovieDetailService = async (id) => {
+  let movie = await movieModel.findOne({movieId: id});
+
+  return movie;
+}
+// 根据电影的movieType获取同类电影
+export let getRelativeMovies = async (movie) => {
+
+  if(!movie){
+    return []
+  }
+
+  let relativeMovies = await movieModel.find({movieTypes: {
+    $in: movie.movieTypes
+  }});
+
+  return relativeMovies;
+}
