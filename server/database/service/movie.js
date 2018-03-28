@@ -20,7 +20,7 @@ export let getMovieService = async (type='',year='',start=0,count=20) => {
     数据量庞大，有待优化 
     https://cnodejs.org/topic/559a0bf493cb46f578f0a601
   */
-   if(count > 20) count = 20;
+  if(count > 20) count = 20;
   let movies = await movieModel.find(query).limit(parseInt(count)).skip(parseInt(start));
   return movies;
 }

@@ -17,6 +17,7 @@ const MovieSchema = new mongoose.Schema({
   movieTypes: [String],
   pubdate: Mixed,
   tags: Mixed,
+  hot:String,
   category: [{
     type: ObjectId,
     ref: 'Category'

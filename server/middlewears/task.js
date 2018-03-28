@@ -12,6 +12,9 @@ export const task = async () => {
     console.log('预告片页面数据爬取开始....')
     await require('../../server/tasks/movie-task')();
     console.log('预告片页面数据爬取完毕!!!')
+    console.log('正在上映页面数据爬取开始....')
+    await require('./server/tasks/hot-task')();
+    console.log('正在上映页面数据爬取完毕!!!')
     // 查找接口，拿到描述和分类
     console.log('查找接口，拿到描述和分类开始....')
     await require('../../server/tasks/request-movie-data')();
