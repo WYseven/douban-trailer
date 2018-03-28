@@ -48,3 +48,50 @@ export const initUser = async () => {
     await u.save();
   }
 }
+
+// 测试ref和populate
+export const  init = async () => {
+  const Schema = mongoose.Schema;
+  const ObjectId = Schema.Types.ObjectId;
+
+  let postSchema = {
+    title: String,
+    users: [{
+      type: ObjectId,
+      ref: 'UsersTest'
+    }]
+  }
+  let postModel = mongoose.model('post',postSchema);
+
+  let usersTestSchema = {
+    name: String
+  }
+  let userModel = mongoose.model('UsersTest',usersTestSchema);
+
+  let u = new userModel({
+    name: 'wang'
+  });
+
+  await u.save();
+
+  let p = new postModel({
+    title: 'hello',
+    users: u
+  })
+
+  await  p.save();
+
+  let postModel123 = mongoose.model('post');
+
+  let ps = postModel123.find().populate('users');
+
+  ps.then((data) => {
+    console.log(data[1].users);
+  })
+
+}
+
+
+
+
+

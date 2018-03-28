@@ -21,7 +21,6 @@ module.exports = async () => {
         }
       ]
     });
-    movies.length = 3;
     const child = cp.fork(taskFile, []); // 开始跑脚本，返回一个子进程的对象
 
     // 监控退出

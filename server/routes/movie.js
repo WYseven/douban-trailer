@@ -32,6 +32,6 @@ export class Movies {
       relativeMovies,
       success: true
     }
-
   }
 }
+

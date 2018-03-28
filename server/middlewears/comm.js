@@ -2,12 +2,19 @@ import bodyParser from 'koa-bodyparser'
 import session from 'koa-session'
 const morgan = require('koa-morgan')
 const responseTime = require('koa-response-time')
+const cors = require('koa-cors');
+
 
 //app.use(morgan('combined')); // 访问的loger日志
 //app.use(responseTime())  // 设置响应信息中的响应时间，X-Response-Time:3ms
 
 export const addBodyParser = app => {
   app.use(bodyParser())
+}
+
+//  增加跨域解决方案cors
+export const addCors = app => {
+  app.use(cors())
 }
 
 export const addSession = app => {

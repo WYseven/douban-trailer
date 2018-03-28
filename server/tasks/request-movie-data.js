@@ -23,9 +23,8 @@ module.exports = async () => {
       ]
     });
 
-    for (let i = 0; i < 3; i++){
+    for (let i = 0; i < movies.length; i++){
       let item = movies[i];
-      console.log(item)
       let movieData = await getMovieData(item.movieId);
       // 解析数据,可能会出错
       try {
@@ -37,6 +36,7 @@ module.exports = async () => {
           item.rawTitle = movieData.title;
           item.movieTypes = movieData.attrs.movie_type || [];
 
+          
 
           for (let i = 0; i < item.movieTypes.length; i++) {
             let typeName = item.movieTypes[i];

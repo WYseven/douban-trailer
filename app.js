@@ -1,6 +1,6 @@
 const koa = require('koa');
 const app = new koa();
-const { connect, initSchemas, initUser} = require('./server/database/connet')
+const { connect, initSchemas} = require('./server/database/connet')
 const { userMiddlewear } = require('./server/utils')
 
 const middlewears = ['comm','router','task']; //定义要加载的中间件
@@ -11,7 +11,6 @@ const middlewears = ['comm','router','task']; //定义要加载的中间件
     console.log('正在连接数据库....');
     await connect();
     initSchemas()
-    initUser();
     console.log('数据库连接成功');
   }catch(error){
     console.log(error,'出了点问题');
